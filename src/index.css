@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.img-enter {
+  @apply opacity-0;
+}
+.img-enter-active {
+  @apply opacity-100 ease-in duration-1000;
+}
+.img-exit {
+  @apply opacity-100;
+}
+.img-exit-active {
+  @apply opacity-0 ease-out duration-1000;
+}
