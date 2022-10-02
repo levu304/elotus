@@ -15,7 +15,7 @@ const ListItem: FC<Props> = ({ listType }: Props) => {
         <figure
           className={`${listType ? "col-span-1" : "col-span-3 lg:col-span-5"}`}
         >
-          <div className="w-full aspect-[3/4] bg-gray-500" />
+          <div className="w-full aspect-[2/3] bg-gray-500" />
         </figure>
         <div
           className={`flex flex-col ${
