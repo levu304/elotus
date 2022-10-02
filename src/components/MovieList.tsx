@@ -2,12 +2,14 @@ import { FC, useState, useMemo, Suspense } from "react";
 import { MovieListComponentProps, MovieListItem } from "../types";
 import { lazy } from "@loadable/component";
 import ListItem from "./skeleton/ListItem";
+import PullToRefresh from "react-simple-pull-to-refresh";
 
 const MovieListItemComponent = lazy(() => import("./MovieListItemComponent"));
 
 const MovieList: FC<MovieListComponentProps> = ({
   items = [],
   listType,
+  handleRefresh,
 }: MovieListComponentProps) => {
   const [query, setQuery] = useState("");
 
@@ -20,20 +22,24 @@ const MovieList: FC<MovieListComponentProps> = ({
   );
 
   return (
-    <div className="grid grid-cols-4 gap-5 py-4">
+    <div className="w-full">
       <input
         value={query}
         onChange={(e) => {
           setQuery(e.target.value);
         }}
-        className="col-span-4 border p-3"
+        className="w-full border p-3"
         placeholder="Search"
       />
-      {filterItems.map((item: MovieListItem, index: number) => (
-        <Suspense fallback={<ListItem key={index} listType={listType} />}>
-          <MovieListItemComponent item={item} key={index} listType={listType} />
-        </Suspense>
-      ))}
+      <PullToRefresh onRefresh={handleRefresh}>
+        <div className="grid grid-cols-4 gap-5 py-4">
+          {filterItems.map((item: MovieListItem, index: number) => (
+            <Suspense key={index} fallback={<ListItem listType={listType} />}>
+              <MovieListItemComponent item={item} listType={listType} />
+            </Suspense>
+          ))}
+        </div>
+      </PullToRefresh>
     </div>
   );
 };

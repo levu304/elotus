@@ -4,7 +4,7 @@ import { FC, useState } from "react";
 import SegmentedControl from "./SegmentedControl";
 
 const TopRatedList: FC = () => {
-  const { items, error, isLoading } = useTopRated();
+  const { items, error, isLoading, handleRefresh } = useTopRated();
   const [isList, setIsList] = useState(false);
 
   if (isLoading) {
@@ -18,7 +18,7 @@ const TopRatedList: FC = () => {
   return (
     <>
       <SegmentedControl listType={isList} setControl={setIsList} />
-      <MovieList items={items} listType={isList} />
+      <MovieList items={items} listType={isList} handleRefresh={handleRefresh} />
     </>
   );
 };

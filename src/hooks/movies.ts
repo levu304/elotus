@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import useSWR from "swr";
+import { useCallback, useMemo } from "react";
+import useSWR, { mutate } from "swr";
 import fetcher from "../lib/fetcher";
 import { FetcherError, MovieDetail, MovieListItem } from "../types";
 
@@ -9,16 +9,19 @@ export const useNowPlaying = (
   isLoading: boolean;
   items: MovieListItem[];
   error: FetcherError;
+  handleRefresh: () => Promise<void>;
 } => {
-  const { data, error } = useSWR(
-    `${import.meta.env.VITE_TMDB_API_ENDPOINT}/movie/now_playing?api_key=${
-      import.meta.env.VITE_TMBD_API_KEY
-    }&language=en-US&page=${page}`,
-    fetcher,
-    {
-      revalidateOnFocus: false,
-    }
+  const url: string = useMemo(
+    () =>
+      `${import.meta.env.VITE_TMDB_API_ENDPOINT}/movie/now_playing?api_key=${
+        import.meta.env.VITE_TMBD_API_KEY
+      }&language=en-US&page=${page}`,
+    [page]
   );
+
+  const { data, error } = useSWR(url, fetcher, {
+    revalidateOnFocus: false,
+  });
 
   const isLoading: boolean = useMemo(() => !data && !error, [data, error]);
 
@@ -28,10 +31,15 @@ export const useNowPlaying = (
     return data.results;
   }, [isLoading, error]);
 
+  const handleRefresh = useCallback(async () => {
+    await mutate(url);
+  }, [url]);
+
   return {
     isLoading,
     items,
     error,
+    handleRefresh,
   };
 };
 
@@ -41,7 +49,16 @@ export const useTopRated = (
   isLoading: boolean;
   items: MovieListItem[];
   error: FetcherError;
+  handleRefresh: () => Promise<void>;
 } => {
+  const url: string = useMemo(
+    () =>
+      `${import.meta.env.VITE_TMDB_API_ENDPOINT}/movie/top_rated?api_key=${
+        import.meta.env.VITE_TMBD_API_KEY
+      }&language=en-US&page=${page}`,
+    [page]
+  );
+
   const { data, error } = useSWR(
     `${import.meta.env.VITE_TMDB_API_ENDPOINT}/movie/top_rated?api_key=${
       import.meta.env.VITE_TMBD_API_KEY
@@ -60,10 +77,15 @@ export const useTopRated = (
     return data.results;
   }, [isLoading, error]);
 
+  const handleRefresh = useCallback(async () => {
+    await mutate(url);
+  }, [url]);
+
   return {
     isLoading,
     items,
     error,
+    handleRefresh,
   };
 };
 

@@ -45,6 +45,7 @@ export class FetcherError extends Error {
 export type MovieListComponentProps = {
   items: MovieListItem[];
   listType: boolean;
+  handleRefresh: () => Promise<any>;
 };
 
 export type MovieListItemComponentProps = {
