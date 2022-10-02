@@ -22,8 +22,9 @@ const Image: FC<Props> = ({ src, alt }: Props) => {
       <img
         ref={nodeRef}
         src={src}
-        className="w-full aspect-[3/4] object-cover bg-gray-300"
+        className="w-full aspect-[2/3] object-cover bg-gray-300"
         alt={alt}
+        loading="lazy"
       />
     </CSSTransition>
   );

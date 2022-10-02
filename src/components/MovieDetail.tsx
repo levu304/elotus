@@ -18,10 +18,11 @@ const MovieDetail: FC = () => {
     <article className="w-full py-4 grid grid-cols-3 gap-5">
       <figure className="col-span-3 lg:col-span-1">
         <img
-          className="w-full aspect-[3/4] object-cover bg-gray-300"
+          className="w-full aspect-[2/3] object-cover bg-gray-300"
           src={`https://image.tmdb.org/t/p/original/${item.poster_path}
       `}
           alt={item.title}
+          loading="lazy"
         />
       </figure>
 
